@@ -1,6 +1,29 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
     const url = require("url");
     const path = require("path");
+
+    const mysql = require('mysql')
+    const connection = mysql.createConnection({
+        host     : 'localhost',
+        user     : 'toor',
+        password : 'toor',
+        database: 'bancos'
+    });
+    connection.connect(function(err) {
+        if (err) {
+            console.log('connect', err);
+        }
+    });
+    ipcMain.on('query', function(e, sql) {
+    console.log('query received', sql);
+        connection.query(sql, function(err, rows, fields) {
+            if(err){
+                console.log('error executing', err);
+                return false;
+            }
+            console.log('success', rows);
+        });
+    });
 
     let mainWindow
 
@@ -20,8 +43,8 @@ const {app, BrowserWindow} = require('electron')
           slashes: true
         })
       );
-      // Open the DevTools.
-      mainWindow.webContents.openDevTools()
+
+      mainWindow.webContents.openDevTools();
 
       mainWindow.on('closed', function () {
         mainWindow = null

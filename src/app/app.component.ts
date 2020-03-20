@@ -10,6 +10,7 @@ import {
   NbTreeGridDataSource,
   NbTreeGridDataSourceBuilder, NbSortDirection, NbSortRequest
 } from '@nebular/theme';
+import {DatosService} from './datos.service';
 
 interface TreeNode<T> {
   data: T;
@@ -34,7 +35,8 @@ interface FSEntry {
 export class AppComponent {
   title = 'adminstax';
   show: boolean;
-   constructor(private sidebarService: NbSidebarService, private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>) {
+   constructor(private sidebarService: NbSidebarService, private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>, private db: DatosService) {
+     this.db.query('SELECT * FROM catalogo_conceptos');
      this.dataSource = this.dataSourceBuilder.create(this.data);
      this.show = false;
   }
