@@ -1,0 +1,18 @@
+@import '~@nebular/theme/styles/theming';
+@import '~@nebular/theme/styles/themes/dark';
+
+$nb-themes: nb-register-theme((
+
+  // add your variables here like:
+
+  color-primary-100: #b3fdff,
+  color-primary-200: #78ebff,
+  color-primary-300: #8feeff,
+  color-primary-400: #68dbff,
+  color-primary-500: #35c5ff,
+  color-primary-600: #1ea8db,
+  color-primary-700: #0e8bb8,
+  color-primary-800: #046694,
+  color-primary-900: #00417a,
+
+), dark, dark);
