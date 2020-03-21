@@ -9,5 +9,8 @@ export class DatosService {
   constructor() { }
   query(sql: string) {
     electron.ipcRenderer.send('query', sql);
+    electron.ipcRenderer.on('querys', (event, arg) => {
+    console.log(arg); // prints "pong"
+  });
   }
 }

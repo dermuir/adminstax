@@ -21,8 +21,7 @@ const {app, BrowserWindow, ipcMain} = require('electron')
                 console.log('error executing', err);
                 return false;
             }
-            console.log('success', rows);
-            console.log('fields',fields);
+            e.reply('querys',rows);
         });
     });
 
