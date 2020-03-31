@@ -9,19 +9,41 @@ const {app, BrowserWindow, ipcMain} = require('electron')
         password : 'toor',
         database: 'bancos'
     });
+    const connection2 = mysql.createConnection({
+        host     : 'localhost',
+        user     : 'toor',
+        password : 'toor',
+        database: 'almacen'
+    });
     connection.connect(function(err) {
         if (err) {
             console.log('connect', err);
         }
     });
-    ipcMain.on('query', function(e, sql) {
-    console.log('query received', sql);
-        connection.query(sql, function(err, rows, fields) {
+    connection2.connect(function(err) {
+        if (err) {
+            console.log('connect', err);
+        }
+    });
+    ipcMain.on('banco', (event, arg) => {
+      console.log(arg);
+      connection.query(arg, function(err, rows, fields) {
             if(err){
                 console.log('error executing', err);
                 return false;
             }
-            e.reply('querys',rows);
+            event.returnValue = rows;
+        });
+    });
+
+    ipcMain.on('almacen', (event, arg) => {
+      console.log(arg);
+      connection2.query(arg, function(err, rows, fields) {
+            if(err){
+                console.log('error executing', err);
+                return false;
+            }
+            event.returnValue = rows;
         });
     });
 
@@ -29,13 +51,13 @@ const {app, BrowserWindow, ipcMain} = require('electron')
 
     function createWindow () {
       mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 2000,
+        height: 2000,
         webPreferences: {
           nodeIntegration: true
         }
       })
-
+      mainWindow.maximize();
       mainWindow.loadURL(
         url.format({
           pathname: path.join(__dirname, `/dist/index.html`),
@@ -44,7 +66,7 @@ const {app, BrowserWindow, ipcMain} = require('electron')
         })
       );
 
-      mainWindow.webContents.openDevTools();
+      //mainWindow.webContents.openDevTools();
 
       mainWindow.on('closed', function () {
         mainWindow = null

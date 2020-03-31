@@ -11,27 +11,37 @@ import {
   NbSidebarModule,
   NbTreeGridModule,
   NbCardModule,
-  NbButtonModule
+  NbButtonModule, NbDialogModule, NbInputModule,
+  NbTooltipModule, NbSelectModule, NbAutocompleteModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbIconModule } from '@nebular/theme';
 import { BancoComponent } from './banco/banco.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AlmacenComponent } from './almacen/almacen.component';
+import {config} from 'rxjs';
+import { AddalmacenComponent } from './addalmacen/addalmacen.component';
+import { AddbancoComponent } from './addbanco/addbanco.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 const appRoutes: Routes = [
   { path: 'banco', component: BancoComponent },
-  { path: 'almacen', component: AlmacenComponent }
+  { path: 'almacen', component: AlmacenComponent },
+  { path: 'addalmacen', component: AddalmacenComponent },
+  { path: 'addbanco', component: AddbancoComponent }
 ];
 
+// @ts-ignore
 @NgModule({
   declarations: [
     AppComponent,
     BancoComponent,
-    AlmacenComponent
+    AlmacenComponent,
+    AddalmacenComponent,
+    AddbancoComponent
   ],
   imports: [
-    NbThemeModule.forRoot({name: 'dark'}),
+    NbThemeModule.forRoot({name: 'aquamarine'}),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -46,8 +56,14 @@ const appRoutes: Routes = [
     NbButtonModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
-    )
+      {enableTracing: true} // <-- debugging purposes only
+    ),
+    NbDialogModule.forRoot(),
+    NbInputModule,
+    NbTooltipModule,
+    NbSelectModule,
+    ReactiveFormsModule,
+    NbAutocompleteModule
   ],
   providers: [DatosService],
   bootstrap: [AppComponent]

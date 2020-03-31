@@ -10,6 +10,8 @@ nb-actions {
 
 .control-panel {
     padding-top: 2rem;
+    padding-left: 0;
+    margin: 0;
 }
 
 h5#active-account {
@@ -107,4 +109,19 @@ button[nbTreeGridRowToggle] {
   .nb-column-items {
     width: 23%;
   }
+}
+
+.scrollable{
+  margin: 0px;
+  padding: 0px;
+}
+
+nb-sidebar{
+  padding-left: 0%;
+  margin-left: 0%;
+}
+
+h1{
+  text-align: center;
+  align-items: center;
 }

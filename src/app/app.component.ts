@@ -14,17 +14,11 @@ import {DatosService} from './datos.service';
 
 interface TreeNode<T> {
   data: T;
-  children?: TreeNode<T>[];
-  expanded?: boolean;
 }
 
 interface FSEntry {
-  name: string;
-  size: string;
-  kind: string;
-  items?: number;
-  childEntries?: FSEntry[];
-  expanded?: boolean;
+  FOLIO_MOV: number; MES: string; BANCO: string; FECHA: string; DESCRIPCION: string; INGRESOS: number; EGRESOS: number;
+  ID_NOMBRE: number; NOMBRE: string; FACTURA: number; ID_VENDEDOR: number; VENDEDOR: string;
 }
 
 @Component({
@@ -35,31 +29,46 @@ interface FSEntry {
 export class AppComponent {
   title = 'adminstax';
   show: boolean;
+  arg: any;
+  private datasa: TreeNode<FSEntry>[];
+
    constructor(private sidebarService: NbSidebarService, private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>, private db: DatosService) {
-     this.db.query('SELECT * FROM catalogo_conceptos');
-     this.dataSource = this.dataSourceBuilder.create(this.data);
+     this.db.bancos('SELECT * FROM registros');
+     this.arg = this.db.getdataBanco();
+     this.declareData();
+     this.dataSourcea = this.dataSourceBuilder.create(this.datasa);
      this.show = false;
+     console.log('vista', this.arg[0].MES);
+     // console.log(almancenInfo[0]);
   }
-  customColumn = 'name';
-  defaultColumns = [ 'size', 'kind', 'items' ];
-  allColumns = [ this.customColumn, ...this.defaultColumns ];
+  customColumna = 'FOLIO_MOV';
+  defaultColumnas = [ 'MES', 'BANCO', 'FECHA', 'DESCRIPCION', 'INGRESOS', 'EGRESOS',
+  'ID_NOMBRE',
+  'NOMBRE',
+  'FACTURA',
+  'ID_VENDEDOR',
+  'VENDEDOR'];
+  allColumnas = [ this.customColumna, ...this.defaultColumnas ];
   source: NbTreeGridDataSource<FSEntry>;
-  dataSource: NbTreeGridDataSource<FSEntry>;
+  dataSourcea: NbTreeGridDataSource<FSEntry>;
 
   sortColumn: string;
   sortDirection: NbSortDirection = NbSortDirection.NONE;
 
-  private data: TreeNode<FSEntry>[] = [
-    {
-      data: { name: 'Projects', size: '1.8 MB', items: 5, kind: 'dir' }
-    },
-    {
-      data: { name: 'Reports', kind: 'dir', size: '400 KB', items: 2 }
-    },
-    {
-      data: { name: 'Other', kind: 'dir', size: '109 MB', items: 2 }
-    },
-  ];
+  declareData() {
+   this.datasa = [
+      {
+        data: { FOLIO_MOV: this.arg[0].FOLIO_MOV, MES: this.arg[0].MES.toString(), BANCO: this.arg[0].BANCO.toString(),
+  FECHA: this.arg[0].FECHA.toString(), DESCRIPCION: this.arg[0].DESCRIPCION.toString(), INGRESOS: this.arg[0].INGRESOS,
+  EGRESOS: this.arg[0].EGRESOS,
+  ID_NOMBRE: this.arg[0].ID_NOMBRE,
+  NOMBRE: this.arg[0].NOMBRE.toString(),
+  FACTURA: this.arg[0].FACTURA,
+  ID_VENDEDOR: this.arg[0].ID_VENDEDOR,
+  VENDEDOR: this.arg[0].VENDEDOR.toString()}
+      }
+    ];
+  }
 
 
   getShowOn(index: number) {
@@ -77,13 +86,5 @@ export class AppComponent {
       return this.sortDirection;
     }
     return NbSortDirection.NONE;
-  }
-  toggle() {
-    this.sidebarService.toggle(true);
-    return false;
-  }
-
-  search() {
-          this.show = !this.show;
   }
 }

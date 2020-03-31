@@ -1,1 +1,33 @@
-<p>banco works!</p>
+<div><nb-actions size="small">
+  <nb-action nbTooltip="Buscar" icon="search-outline" (click)="search()"></nb-action>
+  <nb-action nbTooltip="Editar" icon="edit-outline"></nb-action>
+  <nb-action nbTooltip="Añadir" icon="plus-outline" [routerLink]="['/addbanco']"></nb-action>
+</nb-actions>
+  <label class="search-label" for="search" *ngIf="show">Buscar <input nbInput [nbFilterInput]="dataSourcea" id="search" class="search-input"></label>
+</div>
+<nb-card-body>
+  <table [nbTreeGrid]="dataSourcea" [nbSort]="dataSourcea" (sort)="updateSort($event)" class="mx-3">
+
+    <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumnas"></tr>
+    <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumnas"></tr>
+
+    <ng-container [nbTreeGridColumnDef]="customColumna">
+      <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(customColumna)" *nbTreeGridHeaderCellDef>
+        {{customColumna}}
+      </th>
+      <td nbTreeGridCell *nbTreeGridCellDef="let row">
+        {{row.data[customColumna]}}
+      </td>
+    </ng-container>
+
+    <ng-container *ngFor="let column of defaultColumnas; let index = index"
+                  [nbTreeGridColumnDef]="column"
+                  [showOn]="getShowOn(index)">
+      <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
+        {{column}}
+      </th>
+      <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || '-'}}</td>
+    </ng-container>
+
+  </table>
+</nb-card-body>

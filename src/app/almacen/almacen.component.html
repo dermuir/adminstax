@@ -1,1 +1,39 @@
-<p>almacen works!</p>
+<div><nb-actions size="small">
+  <nb-action icon="search-outline" (click)="search()"></nb-action>
+  <nb-action icon="edit-outline"></nb-action>
+  <nb-action icon="plus-outline"></nb-action>
+</nb-actions>
+  <label class="search-label" for="search" *ngIf="show">Buscar <input nbInput [nbFilterInput]="dataSource" id="search" class="search-input"></label>
+</div>
+<nb-card-body>
+    <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)" class="mx-3">
+
+      <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns"></tr>
+      <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns"></tr>
+
+      <ng-container [nbTreeGridColumnDef]="customColumn">
+        <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(customColumn)" *nbTreeGridHeaderCellDef>
+          {{customColumn}}
+        </th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          <nb-tree-grid-row-toggle
+              [expanded]="row.expanded"
+              *ngIf="row.data.kind === 'dir'">
+            </nb-tree-grid-row-toggle>
+          {{row.data[customColumn]}}
+        </td>
+      </ng-container>
+
+      <ng-container class="rowsa" *ngFor="let column of defaultColumns; let index = index"
+                    [nbTreeGridColumnDef]="column"
+                    [showOn]="getShowOn(index)">
+        <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
+          {{column}}
+        </th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || '-'}}</td>
+      </ng-container>
+
+    </table>
+
+  </nb-card-body>
+
