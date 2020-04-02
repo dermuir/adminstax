@@ -26,7 +26,23 @@
       <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
         {{column}}
       </th>
-      <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || '-'}}</td>
+      <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || ''}}</td>
+    </ng-container>
+
+    <ng-container [nbTreeGridColumnDef]="lastColumna">
+      <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(lastColumna)" *nbTreeGridHeaderCellDef>
+        {{lastColumna}}
+      </th>
+      <td nbTreeGridCell *nbTreeGridCellDef="let row">
+        <button nbButton status="primary" hero size="small" style="margin-right: 1px; margin-bottom: 1px;"
+              (click)="eliminarDato(row)" nbTooltip="Editar dato" nbTooltipPlacement="top" nbTooltipStatus="primary">
+              <nb-icon icon="edit-outline"></nb-icon>
+        </button>
+        <button nbButton status="danger" hero size="small"
+              (click)="eliminarDato(row)" nbTooltip="Eliminar dato" nbTooltipPlacement="top" nbTooltipStatus="danger">
+              <nb-icon icon="trash-2"></nb-icon>
+        </button>
+      </td>
     </ng-container>
 
   </table>

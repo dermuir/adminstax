@@ -12,7 +12,7 @@ import {
   NbTreeGridModule,
   NbCardModule,
   NbButtonModule, NbDialogModule, NbInputModule,
-  NbTooltipModule, NbSelectModule, NbAutocompleteModule
+  NbTooltipModule, NbSelectModule, NbAutocompleteModule, NbToastrModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbIconModule } from '@nebular/theme';
@@ -23,12 +23,14 @@ import {config} from 'rxjs';
 import { AddalmacenComponent } from './addalmacen/addalmacen.component';
 import { AddbancoComponent } from './addbanco/addbanco.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { DialogoComponent } from './dialogo/dialogo.component';
 
 const appRoutes: Routes = [
   { path: 'banco', component: BancoComponent },
   { path: 'almacen', component: AlmacenComponent },
   { path: 'addalmacen', component: AddalmacenComponent },
-  { path: 'addbanco', component: AddbancoComponent }
+  { path: 'addbanco', component: AddbancoComponent },
+  { path: 'dialogo', component: DialogoComponent}
 ];
 
 // @ts-ignore
@@ -38,7 +40,8 @@ const appRoutes: Routes = [
     BancoComponent,
     AlmacenComponent,
     AddalmacenComponent,
-    AddbancoComponent
+    AddbancoComponent,
+    DialogoComponent
   ],
   imports: [
     NbThemeModule.forRoot({name: 'aquamarine'}),
@@ -63,7 +66,8 @@ const appRoutes: Routes = [
     NbTooltipModule,
     NbSelectModule,
     ReactiveFormsModule,
-    NbAutocompleteModule
+    NbAutocompleteModule,
+    NbToastrModule.forRoot()
   ],
   providers: [DatosService],
   bootstrap: [AppComponent]

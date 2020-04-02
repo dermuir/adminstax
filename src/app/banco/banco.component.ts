@@ -8,9 +8,11 @@ import {
   NbIconLibraries,
   NbGetters,
   NbTreeGridDataSource,
-  NbTreeGridDataSourceBuilder, NbSortDirection, NbSortRequest
+  NbTreeGridDataSourceBuilder, NbSortDirection, NbSortRequest, NbDialogService
 } from '@nebular/theme';
 import {DatosService} from '../datos.service';
+import {DialogoComponent} from '../dialogo/dialogo.component';
+import {Router} from '@angular/router';
 
 interface TreeNode<T> {
   data: T;
@@ -31,7 +33,7 @@ export class BancoComponent implements OnInit {
   val: any;
   private datasa: TreeNode<FSEntry>[];
   private datasas: TreeNode<FSEntry>;
-  constructor(private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>, private db: DatosService) {
+  constructor(private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>, private db: DatosService, private dialogService: NbDialogService, private router: Router) {
      this.datasa = [];
      this.db.bancos('SELECT * FROM registros order by `FOLIO_MOV` desc');
      this.arg = this.db.getdataBanco();
@@ -47,7 +49,8 @@ export class BancoComponent implements OnInit {
   'FACTURA',
   'ID_VENDEDOR',
   'VENDEDOR'];
-  allColumnas = [ this.customColumna, ...this.defaultColumnas ];
+  lastColumna = 'OPCIONES';
+  allColumnas = [ this.customColumna, ...this.defaultColumnas, this.lastColumna ];
   source: NbTreeGridDataSource<FSEntry>;
   dataSourcea: NbTreeGridDataSource<FSEntry>;
 
@@ -95,5 +98,11 @@ export class BancoComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  eliminarDato(row: any) {
+    this.db.setCacheBorrar(row.data.FOLIO_MOV);
+    this.dialogService.open(DialogoComponent, { hasBackdrop: true });
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/banco']);
+  }
 }

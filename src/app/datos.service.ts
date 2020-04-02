@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {NbToastrService} from '@nebular/theme';
 const electron = (<any>window).require('electron');
 
 @Injectable({
@@ -10,8 +11,9 @@ export class DatosService {
   private almacen: any;
   private cliente: any;
   private vendedor: any;
+  private cacheBorrar: string;
 
-  constructor() { }
+  constructor(private toastService: NbToastrService) { }
   bancos(sql: string) {
     this.setdataBanco(electron.ipcRenderer.sendSync('banco', sql));
   }
@@ -50,5 +52,22 @@ export class DatosService {
   }
   setVendedores(value: any) {
     this.vendedor = value;
+  }
+  eliminarDato() {
+    if (electron.ipcRenderer.sendSync('banco', 'DELETE FROM `registros` WHERE `FOLIO_MOV` = \'' + this.cacheBorrar + '\';')) {
+      this.toastService.success('Operación exitosa', 'Exitoso', {duration: 7000, destroyByClick: true} );
+    } else {
+      this.toastService.danger('Error en la operación verifique la base de datos', 'Error', {duration: 7000, destroyByClick: true});
+    }
+  }
+  setCacheBorrar(cache: string) {
+    this.cacheBorrar = cache;
+  }
+  insertDato(sql: string) {
+    if (electron.ipcRenderer.sendSync('banco', sql)) {
+      this.toastService.success('Operación exitosa', 'Exitoso', {duration: 7000, destroyByClick: true});
+    } else {
+      this.toastService.danger('Error en la operación verifique la base de datos', 'Error', {duration: 7000, destroyByClick: true});
+    }
   }
 }
